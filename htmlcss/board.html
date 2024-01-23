@@ -11,8 +11,11 @@
 </head>
 <body>
     <div class="row container">
+        <div class="col-md-12 text-center p-3">
+            <h1>게시판</h1>
+        </div>
         <div class="col-md-6 container bg-light">
-            <h1 class="text-center p-4">글 목록</h1>
+            <h3 class="text-center p-4">글 목록</h3>
             <table class="table text-center table-hover">
                 <thead class="table-light">
                 <tr>
@@ -50,12 +53,12 @@
                 </tbody>
             </table>
         </div>
-        <div class="container col-md-6">
-            <h1 class="text-center p-4">상세보기</h1>
+        <div class="container col-md-6 border pb-3">
+            <h3 class="text-center p-4">상세보기</h3>
             <div class="container">
                 <div class="row">
-                    <div class="col-2 h5"><label for="title" class="col-form-label">제목</label></div>
-                    <div class="col-10 h5"><input type="text" readonly class="form-control-plaintext" id="title" value="안녕하세요"></div>
+                    <div class="col-2"><label for="title" class="col-form-label">제목</label></div>
+                    <div class="col-10"><input type="text" readonly class="form-control-plaintext" id="title" value="안녕하세요"></div>
                 </div>
                 <div class="row">
                     <div class="col-2"><label for="writer" class="col-form-label">작성자</label></div>
@@ -78,14 +81,14 @@
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                      <form>
-                        <div class="mb-3">
-                          <label for="recipient-name" class="col-form-label">제목</label>
+                      <form class="mb-4">
+                        <div class="form-floating mt-2">
                           <input type="text" class="form-control" id="recipient-name">
+                          <label for="recipient-name">제목</label>
                         </div>
-                        <div class="mb-3">
-                          <label for="message-text" class="col-form-label">내용</label>
-                          <textarea class="form-control" id="message-text"></textarea>
+                        <div class="form-floating mt-4">
+                            <textarea class="form-control" id="message-text" style="height:200px;"></textarea>
+                            <label for="message-text">내용</label>
                         </div>
                       </form>
                     </div>
