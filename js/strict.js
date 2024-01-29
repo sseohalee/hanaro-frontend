@@ -23,7 +23,7 @@ function f1(x, y) {
     console.log(t, '`inner2`', xx, zz);
   }
   var zz = 800;
-  console.log('ðŸš€  gg:', gg);
+  console.log('?Ÿš?  gg:', gg);
   f2('* second');
 }
 function f2(g) {
