@@ -22,3 +22,9 @@ const memoizedFibonacci = memoized(function A(n){
 let memoizedFibonacciRunCnt=0;
 console.log(memoizedFibonacci(5));
 console.log(memoizedFibonacci(7));
+
+// const memoizedFibonacci = memoized(function A(n){
+//     memoizedFibonacciRunCnt +=1;
+//     console.log(`pre=${n}`);
+//     return (n<2 ? n : (memoizedFibonacci(n-1)+memoizedFibonacci(n-2))); 
+// })

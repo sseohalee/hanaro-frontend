@@ -11,4 +11,3 @@ function copyObject(obj){
         newObj[k] = obj[k];
     return newObj;
 }
-

@@ -23,7 +23,7 @@ const arr2 = { 'A': [10, 20], 'B': [30, 40], 'C': [50, 60, 70] };
 console.log('Object -> Array');
 function makeObjectFromArray(arr){
     const rets=[];
-    for(k of arr){
+    for(const k of arr){
         const [first, ...rest]=k;
         rets.push([first, rest]);
     }
@@ -37,8 +37,8 @@ console.log('Array -> Object');
 
 function makeArrayFromObject(arr){
     const rets=[];
-    for(k in arr2){
-        rets.push([k, ...arr2[k]])
+    for(const k in arr2){
+        rets.push([k, ...arr2[k]]);
     }
     return rets;
 }
