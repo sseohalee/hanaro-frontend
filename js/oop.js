@@ -29,4 +29,17 @@ Cat.prototype.gguk();
 Animal.prototype;
   // {} (최상위 Object)
 
-  
+const objProxy = new Proxy(obj, {
+  set(target, rop, value){
+    console.log('proxy.set>>',prop, value);
+    return target[prop]=value;
+  },
+  get(target,prop){
+    console.log('proxy.get>>',prop);
+    if(prop==='id_name') return `${target['id']}. ${target['name']}` 
+    return target[prop];
+  },
+});
+
+objProxy.id=100;
+console.log('obj.id>>',objProxy.id);
