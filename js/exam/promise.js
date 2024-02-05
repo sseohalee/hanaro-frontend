@@ -32,9 +32,26 @@ const depthTimer = (id=1)=>
         }, id*1000);
     });
 
-depthTimer(1)
-    .then(depthTimer(2))
-    .then(depthTimer(3))
-    .catch(err=>console.error(err));
+// 1) then 방식
+// depthTimer(1)
+//     .then(depthTimer(2))
+//     .then(depthTimer(3))
+//     .catch(err=>console.error(err));
 
-console.log('START!', new Date());
+// console.log('START!', new Date());
+
+// 2) await 방식
+// try{
+//     const r1 = await depthTimer(1);
+//     const r2 = await depthTimer(2);
+//     const r3 = await depthTimer(3);
+// } catch (err){
+//     console.error(err);
+// }
+
+// 3) for-await-of 방식
+
+// const depthTimers=[1,2,3].map(async depth=> depthTimer)
+
+//1. title, body 출력
+//2. 댓글목록(posts, postId, comments) 출력
