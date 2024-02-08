@@ -77,3 +77,40 @@ function addx(a:ANY, b?:ANY){
 }
 
 type F = (a:ANY, b: number|undefined, c:number)=>number;
+
+// -------this
+// type XUser = {
+//     age:number;
+//     init(this:XUser):(x:number)=>{};
+// }
+
+interface XUser {
+    age:number;
+    init(this:XUser):(x:number)=>{};
+}
+
+let u1:XUser={
+    age:20,
+    init(this:XUser){
+        return(x:number)=>this.age+x;
+    },
+};
+
+let getAge=u1.init();
+let age=getAge(5);
+console.log("🚀 ~ age:", age);
+
+type AF=(n:number)=>{}; //Object 리턴
+const af:AF=(n:number)=>n**2; //af에 타입을 주고 싶다
+const af2:AF=function(n){
+    return n**3;
+}
+function af3(n:number){
+    return n**4;
+}
+
+let numbers: (string|number)[];
+// let numbers: Array<number>;
+
+numbers=[1,2,3,4,5];
+numbers.push('six');
