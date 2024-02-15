@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>주급</title>
     <style>
         table{
-            width:700px;
+            width:900px;
+            table-layout: fixed;
         }
 
         table, th, td {
@@ -27,7 +28,7 @@
     <table id="salaryTable">
         <thead>
             <tr>
-                <th>번호</th>
+                <th width="5%">번호</th>
                 <th>이름</th>
                 <th>근무시간</th>
                 <th>시간당급여액</th>
@@ -39,10 +40,8 @@
             </tr>
         </thead>
         <tbody>
-
         </tbody>
     </table>
-    
 
     <script>
         window.onload=function(){
@@ -56,57 +55,43 @@
                     { id: 5, username: "강민구", work_time: 30, per_pay: 10000 },
                 ]
             };
-            let exceedPercent = 0.5; // 초과수당
-            let taxPercent = 0.033;
-            var totalPay=0;
+            const excessPercent = 0.5; // 초과수당 비율
+            const taxPercent = 0.033; // 세금 비율
+            var totalPay=0; // 총지불액
 
-            var table=document.getElementById('salaryTable');
-            var div=document.createElement('div');
-            
+            const table=document.getElementById('salaryTable');
+
+            const calcSalary=(user,baseTime)=>{
+                const workTime=parseInt(user['work_time']);
+                const perPay=parseInt(user['per_pay']);
+
+                const basePay=workTime*perPay; // 기본액
+                const excessTime=workTime-parseInt(baseTime); 
+                const excessPay=(excessTime>0 ? excessTime*perPay*excessPercent : 0); // 초과수당
+                const sumPay=basePay+excessPay; // 합계
+                const taxPay=sumPay*taxPercent; // 세액
+                const netPay=sumPay-taxPay; // 실지불액
+                
+                return {'basePay':basePay, 'excessPay':excessPay, 'sumPay':sumPay, 'taxPay':taxPay, 'netPay':netPay};
+            };
+
             obj.list.forEach(user=>{
                 const row = table.insertRow();
                 for (const[k,v] of Object.entries(user)){
                     const cell=row.insertCell();
-                    if(k==='username') cell.style.textAlign = "left";;
+                    if(k==='username') cell.classList.add('name');
                     cell.innerText=v.toLocaleString();
                 }
 
-                //기본액
-                var pay=user['work_time']*user['per_pay'];
-                row.insertCell().innerText=pay.toLocaleString();
-
-                //초과수당
-                var exceed=0;
-                if(user['work_time']>obj.base_time){
-                    let exceedTime=user['work_time']-obj.base_time;
-                    exceed=user['per_pay']*exceedTime*exceedPercent;
-                }
-                row.insertCell().innerText=exceed.toLocaleString();
-
-                //합계
-                var sum=pay+exceed;
-                row.insertCell().innerText=sum.toLocaleString();
-
-                //세액
-                var tax=sum*taxPercent;
-                row.insertCell().innerText=tax.toLocaleString();
-                
-                //실지불액
-                var actualPay=sum-tax;
-                totalPay+=actualPay;
-                row.insertCell().innerText=actualPay.toLocaleString();
+                const salary=calcSalary(user,obj.base_time);
+                for(v of Object.values(salary)) row.insertCell().innerText=v.toLocaleString();
+                totalPay+=salary['netPay'];
             });
 
-            //총지불액
-            const row = table.insertRow();
-            const cell=row.insertCell();
-            cell.colSpan="7";
-            row.insertCell().innerText='총지불액';
-            row.insertCell().innerText=totalPay.toLocaleString();
-
+            const div = document.createElement('div');
+            div.innerText = '총지불액 '+totalPay.toLocaleString();
+            document.body.appendChild(div);
         }
-
-
     </script>
 </body>
 </html>

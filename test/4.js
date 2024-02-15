@@ -1,25 +1,57 @@
-import assert from 'assert'; // ESM  
+import assert from 'assert'; // ESM 
 
 // ⇒ const assert = require('assert'); // CJS
 
 class Collection {
-    constructor() {}
-    get _arr() {}
-    push(value) {}
+    #arr;
+
+    constructor(...args) {
+        this.#arr = Array.isArray(args[0]) ? args[0] : args;
+    }
+
+    get _arr() {
+        return this.#arr;
+    }
+
+    push(value) {
+        this.#arr.push(value);
+        return this;
+    }
+
     // 가장 (Stack:나중, Queue:먼저) 들어간 요소 반환 (요소 삭제 없음!)
-    get peek() {}
+    get peek() {
+        return this.constructor.name === "Stack" ? this.#arr.at(-1) : this.#arr.at(0);
+    }
+
     // 가장 (Stack:나중, Queue:먼저) 들어간 요소 반환 & 삭제
-    get poll() {}
+    get poll() {
+        return this.constructor.name === "Stack" ? this.#arr.pop() : this.#arr.shift();
+    }
+
     // 모든 원소 지우기
-    clear() {}
+    clear() {
+        this.#arr = [];
+    }
+
     // array 타입 반환
-    toArray() {}
+    toArray() {
+        return Array.from(this.#arr);
+    }
+
     // 가장 (Stack:나중, Queue:먼저) 들어간 요소 삭제(skip)
-    remove() {}
+    remove() {
+        this.constructor.name === "Stack" ? this.#arr.pop() : this.#arr.shift();
+    }
+
     // 원소가 하나도 없으면 true
-    get isEmpty() {}
+    get isEmpty() {
+        return !this.#arr.length;
+    }
+
     // 현재 원소의 개수
-    get size() {}
+    get size() {
+        return this.#arr?.length;
+    }
 }
 
 class Stack extends Collection {
