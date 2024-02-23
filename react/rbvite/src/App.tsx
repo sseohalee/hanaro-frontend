@@ -5,6 +5,8 @@ import My, { ItemHandler } from './components/My';
 import { flushSync } from 'react-dom';
 import { useCounter } from './contexts/counter-context';
 import { SessionProvider } from './contexts/session-context';
+import Posts from './components/Posts';
+import MouseCapture from './components/MouseCapture';
 // import Effect from './components/Effect';
 
 // {ss: 'FirstComponent' }
@@ -24,7 +26,6 @@ function App() {
 
   const childInputRef = createRef<HTMLInputElement>();
   const titleRef = useRef<HTMLHeadingElement>(null);
-
   const myHandlerRef = useRef<ItemHandler>(null);
 
   return (
@@ -33,22 +34,16 @@ function App() {
       <h1 ref={titleRef} style={{ color: 'white', backgroundColor: 'red' }}>
         Vite + React
       </h1>
-      <div className='card'>
-        <button
-          onClick={() => {
-            // setCount((count) => count + 1);
-            for (let i = 0; i < 10; i += 1) {
-              // console.log('i=', i);
-              // setCount(count + 1);
-              // setCount((prev) => prev + 1);
-              flushSync(plusCount);
-            }
-          }}
-        >
-          count is {count}
-        </button>
-      </div>
-      <H5 ss={`First-Component ${count}`} ref={childInputRef} />
+
+      <SessionProvider myHandlerRef={myHandlerRef}>
+        <Posts />
+        <My ref={myHandlerRef} />
+        <Hello>Hello-children!!!!!!!!!!!</Hello>
+      </SessionProvider>
+
+      <MouseCapture />
+
+      {/* <H5 ss={`First-Component ${count}`} ref={childInputRef} /> */}
       <button
         onClick={() => {
           if (childInputRef.current) {
@@ -67,10 +62,21 @@ function App() {
       </button>
       <button onClick={() => myHandlerRef.current?.removeItem()}>Rm2</button>
 
-      <SessionProvider myHandlerRef={myHandlerRef}>
-        <My ref={myHandlerRef} />
-        <Hello>Hello-children!!!!!!!!!!!</Hello>
-      </SessionProvider>
+      <div className='card'>
+        <button
+          onClick={() => {
+            // setCount((count) => count + 1);
+            for (let i = 0; i < 10; i += 1) {
+              // console.log('i=', i);
+              // setCount(count + 1);
+              // setCount((prev) => prev + 1);
+              flushSync(plusCount);
+            }
+          }}
+        >
+          count is {count}
+        </button>
+      </div>
 
       <button
         onClick={() => titleRef.current?.scrollIntoView({ behavior: 'smooth' })}

@@ -8,13 +8,13 @@ export const useTimeout = (
 ) => {
   const timerRef = useRef<ReturnType<typeof setTimeout>>();
 
-  const cbRef = useRef(cb);
+  const cbRef = useRef(cb); // 처음에 초기화 1번만 왜 useRef를 사용하는가
   cbRef.current = cb;
   const delayRef = useRef(delay);
   delayRef.current = delay;
 
   const setup = useCallback(() => {
-    console.log('set-up!!', delay, delayRef.current);
+    // console.log('set-up!!', delay, delayRef.current);
     //                      &100,  &800.current
     // timerRef.current = setTimeout(cbRef.current, delay);
     timerRef.current = setTimeout(cbRef.current, delayRef.current);
