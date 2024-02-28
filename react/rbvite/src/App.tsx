@@ -11,7 +11,17 @@ import { NotFound } from './NotFound';
 import { Home } from './components/Home';
 import Sample from './components/Sample';
 import DeferTrans from './components/DeferTrans';
-import Post from './components/Post';
+import { PostLayout } from './components/PostLayout';
+import { PostDetail } from './components/PostDetail';
+import { ItemLayout } from './components/items_v1/ItemLayout';
+import { Items } from './components/items_v1/Items';
+import { Item } from './components/items_v1/Item';
+import {
+  ItemEditV2,
+  ItemLayoutV2,
+  ItemsV2,
+  ItemV2,
+} from './components/items_v2/itemV2';
 // import DeferTrans from './components/DeferTrans';
 // import Effect from './components/Effect';
 
@@ -30,12 +40,22 @@ function App() {
           <Route path='/' element={<Home />} />
           <Route path='/login' element={<Login ref={loginHandlerRef} />} />
           <Route path='/my' element={<My ref={myHandlerRef} />} />
-          <Route path='/posts'>
+          <Route path='/posts' element={<PostLayout />}>
             <Route index element={<Posts />} />
-            <Route path=':id' element={<Post />} />
+            <Route path=':id' element={<PostDetail />} />
           </Route>
-          {/* <Route path='/items' element={<Items />} />
-        <Route path='/items/:id' element={<Item />} /> */}
+
+          <Route path='/v1/items' element={<ItemLayout />}>
+            <Route index element={<Items />} />
+            <Route path=':id' element={<Item />} />
+          </Route>
+
+          <Route path='/v2/items' element={<ItemLayoutV2 />}>
+            <Route index element={<ItemsV2 />} />
+            <Route path=':id' element={<ItemV2 />} />
+            <Route path=':id/edit' element={<ItemEditV2 />} />
+          </Route>
+
           <Route path='/hello' element={<Hello />} />
           <Route path='/sample' element={<Sample />} />
           <Route path='/difertrans' element={<DeferTrans />} />

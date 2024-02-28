@@ -6,12 +6,10 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
   useReducer,
 } from 'react';
 import { ItemHandler } from '../components/My';
-import { useFetch } from '../hooks/fetch';
 import { LoginHandler } from '../components/Login';
 
 type SessionContextProp = {
@@ -50,40 +48,73 @@ type Action =
   | { type: 'removeItem'; payload: number };
 
 const reducer = (session: Session, { type, payload }: Action) => {
+  let newer;
   switch (type) {
     case 'set':
-      return { ...payload };
+      newer = { ...payload };
+      break;
 
     case 'login':
     case 'logout':
-      return { ...session, loginUser: payload };
+      newer = { ...session, loginUser: payload };
+      break;
 
-    case 'saveItem': {
-      const { id, name, price } = payload;
-      const { cart } = session;
-      const foundItem = id !== 0 && cart.find((item) => item.id === id);
-      if (!foundItem) {
-        const maxId = Math.max(...session.cart.map((item) => item.id), 0) + 1;
-        // cart.push({ id: maxId + 1, name, price }); // Bug!!
-        return { ...session, cart: [...cart, { id: maxId + 1, name, price }] };
+    case 'saveItem':
+      {
+        const { id, name, price } = payload;
+        const { cart } = session;
+        const foundItem = id !== 0 && cart.find((item) => item.id === id);
+        if (!foundItem) {
+          const maxId = Math.max(...session.cart.map((item) => item.id), 0) + 1;
+          // cart.push({ id: maxId + 1, name, price }); // Bug!!
+          newer = {
+            ...session,
+            cart: [...cart, { id: maxId + 1, name, price }],
+          };
+        } else {
+          foundItem.name = name;
+          foundItem.price = price;
+          console.log('🚀  foundItem:', foundItem);
+
+          newer = { ...session };
+        }
       }
-
-      foundItem.name = name;
-      foundItem.price = price;
-      console.log('🚀  foundItem:', foundItem);
-
-      return { ...session };
-    }
+      break;
 
     case 'removeItem':
-      return {
+      newer = {
         ...session,
         cart: session.cart.filter((item) => item.id !== payload),
       };
+      break;
+
     default:
       return session;
   }
+  setStorage(newer);
+  return newer;
 };
+
+const SKEY = 'session';
+const DefaultSession: Session = {
+  loginUser: null,
+  cart: [],
+};
+
+function getStorage() {
+  const storedData = localStorage.getItem(SKEY);
+  if (storedData) {
+    return JSON.parse(storedData) as Session;
+  }
+
+  setStorage(DefaultSession);
+
+  return DefaultSession;
+}
+
+function setStorage(session: Session) {
+  localStorage.setItem(SKEY, JSON.stringify(session));
+}
 
 export const SessionProvider = ({
   children,
@@ -94,10 +125,10 @@ export const SessionProvider = ({
   //   loginUser: null,
   //   cart: [],
   // });
-  const [session, dispatch] = useReducer(reducer, {
-    loginUser: null,
-    cart: [],
-  });
+  const [session, dispatch] = useReducer(
+    reducer,
+    getStorage() || DefaultSession
+  );
 
   const totalPrice = useMemo(
     () => session.cart.reduce((sum, item) => sum + item.price, 0),
@@ -178,17 +209,17 @@ export const SessionProvider = ({
     // session.cart = session.cart.filter((item) => item.id !== itemId);
   }, []);
 
-  const { data, error } = useFetch<Session>({
-    url: '/data/sample.json',
-  });
-  if (error) console.error('ERROR:', error);
+  // const { data, error } = useFetch<Session>({
+  //   url: '/data/sample.json',
+  // });
+  // if (error) console.error('ERROR:', error);
 
-  useEffect(() => {
-    if (data) {
-      // console.log('ddddddddddddd>>>', data);
-      dispatch({ type: 'set', payload: data });
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (data) {
+  //     // console.log('ddddddddddddd>>>', data);
+  //     dispatch({ type: 'set', payload: data });
+  //   }
+  // }, [data]);
 
   return (
     <SessionContext.Provider
