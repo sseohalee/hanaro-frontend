@@ -1,28 +1,9 @@
-import {
-  ChangeEvent,
-  useDeferredValue,
-  useEffect,
-  useState,
-  useTransition,
-} from 'react';
+import { ChangeEvent, useState, useTransition } from 'react';
 import { useTimeout } from '../hooks/timeout';
 
 type List = {
   id: number;
   value: string;
-};
-
-const useDebounce = (
-  cb: () => void,
-  delay: number,
-  dependencies: unknown[] = []
-) => {
-  useEffect(() => {
-    const timer = setTimeout(cb, delay);
-
-    return () => clearTimeout(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, dependencies);
 };
 
 export default function DeferTrans() {
