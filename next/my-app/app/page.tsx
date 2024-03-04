@@ -4,7 +4,18 @@ import Link from 'next/link';
 export default function Home() {
   return (
     <main className='flex min-h-screen flex-col items-center justify-between p-24'>
-      <Link href='/hello' className='text-xl font-semibold border-4 border-red-300'>Go Hello</Link>
+      <Link
+        href='/hello'
+        className='text-xl font-semibold border-4 border-red-300'
+      >
+        Go Hello
+      </Link>
+      <Link
+        href='/hi'
+        className='text-xl font-semibold border-4 border-red-300'
+      >
+        Hi
+      </Link>
       <Image
         src='/vercel.svg'
         alt='Vercel Logo'
